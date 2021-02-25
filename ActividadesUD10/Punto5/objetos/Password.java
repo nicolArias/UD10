@@ -17,13 +17,13 @@ public class Password {
 	//CONSTRUCTOR POR DEFECTO
 	public Password() {
 		this.longitud=LONGITUD_CONST;
-		this.contraseña="";
+		generarPassword();
 	}
 	
 	//CONSTRUCTOR CON PARAMETROS
 	public Password(int longitud) {
 		this.longitud=longitud;
-		this.contraseña=generarPassword();
+		generarPassword();
 	}
 	
 	
@@ -34,7 +34,7 @@ public class Password {
 
 	public void setLongitud(int longitud) {
 		this.longitud = longitud;
-		this.contraseña=generarPassword();
+		generarPassword();
 	}
 
 	public String getContraseña() {
@@ -47,27 +47,30 @@ public class Password {
 	public boolean esFuerte() {
 		boolean respuesta=false;
 		
-		String c;
+		char valorTemp;
+		
 		int isMayus=0;
 		int isMin=0;
 		int isNum=0;
-		for(int j=0;j<longitud;j++) {
-			c=getContraseña().valueOf(j);
+		String caracterClave;
+		
+		for(int j=0;j<this.longitud;j++) {
+			valorTemp=getContraseña().charAt(j);
+			caracterClave=Character.toString(valorTemp);
+			System.out.println("valor por posicion: "+caracterClave);
 			
-			if(isNum(c)) {//Va al método is num que retorna un true o false
+			if(isNum(caracterClave)) {//Va al método is num que retorna un true o false
 				isNum++;
-			}else if(c.equals(c.toUpperCase())) {//Válida si el caracter es una letra mayuscula
+			}else if(caracterClave.equals(caracterClave.toUpperCase())) {//Válida si el caracter es una letra mayuscula
 				isMayus++;
-			}else if(c.equals(c.toLowerCase())) {//Válida si el caracter en una letra minuscula
+			}else if(caracterClave.equals(caracterClave.toLowerCase())) {//Válida si el caracter en una letra minuscula
 				isMin++;	
 			}
 		}
-		
 		//Esta condición válida que la contraseña tenga mas de 5 números, mas de 2 letras mayusculas y mas de 1 letra minuscula
 		if(isNum>5 && isMayus>2 && isMin>1) {
 			respuesta=true;
 		}
-		
 		return respuesta;
 	}
 	
@@ -83,9 +86,9 @@ public class Password {
 	}
 	
 	//Genera la contraseña del objeto con la longitud que tenga
-	public  String generarPassword() {
+	public  void generarPassword() {
 		
-		String valores="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz";
+		String valores="1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz1234567890";
 		StringBuilder sb=new StringBuilder(valores);//Se guarda la cadena de 'valores' a un StringBuilder
 		int tamaño=sb.length();//Me da cantidad de caracteres de la cadena
 		
@@ -93,12 +96,11 @@ public class Password {
 		
 		
 		for(int i=0;i<getLongitud();i++) {
-			int numAleatorio=random.nextInt(tamaño)+1;//Me genera un número aleatorio que se encuentre entre el 1 y el tamaño de la cadena de texto
+			int numAleatorio=random.nextInt(tamaño)+0;//Me genera un número aleatorio que se encuentre entre el 1 y el tamaño de la cadena de texto
 			password+=sb.charAt(numAleatorio);//Aqui me genera la contraseña aleatoria
 		
 		}
-		System.out.println(password);
-		return password;
+		this.contraseña=password;
 	}
 
 	
